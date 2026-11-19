@@ -1,0 +1,138 @@
+from enum import Enum
+
+class colour(Enum):
+    RED = 1
+    GREEN = 2
+    BLUE = 3
+
+class Point:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+
+    def __del__(self):
+        pass
+
+    def get_x(self):
+        return self.__x
+
+    def set_x(self, x):
+        self.__x = x
+
+    def get_y(self):
+        return self.__y
+
+    def set_y(self, y):
+        self.__y = y
+
+    def print_point(self):
+        print(f"({self.__x}, {self.__y})")
+
+class Polynom:
+    def __init__(self, points, col):
+        self.__points = points
+        self.__colour = col
+
+    def __del__(self):
+        pass
+
+    def get_points(self):
+        return self.__points
+
+    def set_points(self, points):
+        self.__points = points
+
+    def get_colour(self):
+        return self.__colour
+
+    def set_colour(self, colour):
+        self.__colour = colour
+
+    def perimeter(self):
+        perim = 0
+        n = len(self.__points)
+        for i in range(n):
+            p1 = self.__points[i]
+            if i == n - 1:
+                p2 = self.__points[0]
+            else:
+                p2 = self.__points[i + 1]
+            dist = round(((p2.get_x() - p1.get_x()) ** 2 + (p2.get_y() - p1.get_y()) ** 2) ** 0.5, 2)
+            perim += dist
+        return perim
+
+    def longest_diagonal(self):
+        max_diag = 0
+        n = len(self.__points)
+        for i in range(n):
+            for j in range(n):
+                if abs(i - j) > 1 and not (i == 0 and j == n - 1) and not (i == n - 1 and j == 0):
+                    p1 = self.__points[i]
+                    p2 = self.__points[j]
+                    diag = round(((p2.get_x() - p1.get_x()) ** 2 + (p2.get_y() - p1.get_y()) ** 2) ** 0.5, 2)
+                    if diag > max_diag:
+                        max_diag = diag
+        return max_diag
+
+    def sort_x(self):
+        n = len(self.__points)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                if self.__points[j].get_x() > self.__points[j + 1].get_x():
+                    temp = self.__points[j]
+                    self.__points[j] = self.__points[j + 1]
+                    self.__points[j + 1] = temp
+
+    def sort_y(self):
+        n = len(self.__points)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                if self.__points[j].get_y() > self.__points[j + 1].get_y():
+                    temp = self.__points[j]
+                    self.__points[j] = self.__points[j + 1]
+                    self.__points[j + 1] = temp
+
+    def display(self):
+        print("Колір:", self.__colour.name)
+        print("Точки:")
+        for p in self.__points:
+            p.print_point()
+
+def main():
+    p1 = Point(2, 3)
+    p2 = Point(6, 4)
+    p3 = Point(3, 4)
+    p4 = Point(3, 1)
+    p5 = Point(7, 6)
+
+    my_points = [p1, p2, p3, p4, p5]
+    poly = Polynom(my_points, colour.GREEN)
+
+    poly.display()
+    print("Периметр:", poly.perimeter())
+    print("Найдовша діагональ:", poly.longest_diagonal())
+
+    poly.sort_x()
+    print("Після сортування по X:")
+    poly.display()
+
+    poly.sort_y()
+    print("Після сортування по Y:")
+    poly.display()
+
+    point1 = Point(8, 3)
+    point2 = Point(6, 4)
+    point3 = Point(8, 4)
+    point4 = Point(7, 1)
+    point5 = Point(4, 6)
+    point6 = Point(3, 5)
+    point7 = Point(1, 8)
+
+    pol = [point1, point2, point3, point4, point5, point6, point7]
+    polyom = Polynom(pol, colour.RED)
+    m = polyom.get_points()
+    for p in m:
+        print(p.get_x(), p.get_y())
+
+
+main()
